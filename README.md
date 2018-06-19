@@ -18,3 +18,5 @@ By default the following users are present in the database:
 * admin - username: a@a.com, password: pass
 * operator - username: b@b.com, password: pass
 * publisher - username: c@c.com, password: pass
+
+

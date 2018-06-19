@@ -24,6 +24,7 @@
         <java.version>1.8</java.version>
         <jaxb.version>2.3.0</jaxb.version>
         <exec.maven.plugin.version>1.6.0</exec.maven.plugin.version>
+        <failsafe.plugin.version>2.20.1</failsafe.plugin.version>
     </properties>
 
     <dependencies>
@@ -43,7 +44,10 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.springframework.session</groupId>
+            <artifactId>spring-session-jdbc</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-devtools</artifactId>
@@ -112,6 +116,27 @@
                                 <argument>build</argument>
                             </arguments>
                         </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-failsafe-plugin</artifactId>
+                <version>${failsafe.plugin.version}</version>
+                <configuration>
+                    <includes>
+                        <include>**/*IT.java</include>
+                    </includes>
+                    <classesDirectory>${basedir}/target/${project.artifactId}-${project.version}.jar.original</classesDirectory>
+                    <parallel>none</parallel>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>integration-test</phase>
+                        <goals>
+                            <goal>integration-test</goal>
+                            <goal>verify</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>

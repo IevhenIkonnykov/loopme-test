@@ -1,0 +1,12 @@
+.dialog{
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  height: 100%;
+  justify-content: space-between;
+
+  &__actions{
+    display:flex;
+    align-self: flex-end;
+  }
+}

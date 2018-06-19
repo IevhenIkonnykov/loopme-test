@@ -1,9 +1,9 @@
 INSERT INTO USERS
-VALUES (1, 'a@a.com', 'admin', '$2y$12$H/FUN96InArZnmu3Gvwq4etHt6siMPKlXIBRtASVGtoWiShw6aQfS', 'ADMIN');
+VALUES (1, 'a@a.com', 'admin', '$2a$10$17JJjJ/cJx6MX.4oyI0JSu862tPxHCTPgg/DHsI3YBLTIkZpn7Che', 'ADMIN');
 INSERT INTO USERS
-VALUES (2, 'b@b.com', 'operator', '$2y$12$H/FUN96InArZnmu3Gvwq4etHt6siMPKlXIBRtASVGtoWiShw6aQfS', 'ADOPS');
+VALUES (2, 'b@b.com', 'operator', '$2a$10$17JJjJ/cJx6MX.4oyI0JSu862tPxHCTPgg/DHsI3YBLTIkZpn7Che', 'ADOPS');
 INSERT INTO USERS
-VALUES (3, 'c@c.com', 'publisher', '$2y$12$H/FUN96InArZnmu3Gvwq4etHt6siMPKlXIBRtASVGtoWiShw6aQfS', 'PUBLISHER');
+VALUES (3, 'c@c.com', 'publisher', '$2a$10$17JJjJ/cJx6MX.4oyI0JSu862tPxHCTPgg/DHsI3YBLTIkZpn7Che', 'PUBLISHER');
 
 INSERT INTO APPS
 VALUES (1, 'app1', 'IOS', 3);

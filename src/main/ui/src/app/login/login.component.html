@@ -1,0 +1,25 @@
+<div class="login">
+  <h1 class="heading-primary">Please login</h1>
+  <form role="form" [formGroup]="loginForm" novalidate class="login__form">
+    <mat-form-field class="login__input">
+      <input matInput placeholder="E-mail" formControlName="emailFormControl">
+      <mat-error
+        *ngIf="loginForm.get('emailFormControl').hasError('email') && !loginForm.get('emailFormControl').hasError('required')">
+        Please enter a valid e-mail address
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('emailFormControl').hasError('required')">
+        E-mail is required
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field class="login__input">
+      <input matInput type="password" placeholder="Password" formControlName="passwordFormControl">
+      <mat-error *ngIf="loginForm.get('passwordFormControl').hasError('required')">
+        Password is required
+      </mat-error>
+      <mat-error *ngIf="loginForm.get('passwordFormControl').hasError('minlength')">
+        Minimum length should not be less 4 symbols
+      </mat-error>
+    </mat-form-field>
+    <button mat-button class="login__button" (click)="submit()" [disabled]="loginForm.invalid">Login</button>
+  </form>
+</div>
