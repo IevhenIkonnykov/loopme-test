@@ -1,6 +1,6 @@
 # Additional software
 It is supposed that the following software is installed on a computer:
-* java 8 or newer ([see official website](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html))
+* java 8 ([see official website](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html))
 * maven 3.x ([see official website](https://maven.apache.org/download.cgi)) or it might be included in a used IDE
 * nodejs 8.x and npm 5.x ([see official website](https://nodejs.org/en/download/))
 * angular cli ([see official website](https://cli.angular.io/))
@@ -28,4 +28,5 @@ It was developed and tested for a modern Google Chrome browser.
 * Task description does not contain information about a test coverage, so the project is covered only partly.
 * CSRF support is disabled for simplicity, because the task description does not contain requirements concerning how security should be organized and in which bounds.
 * Validation of dtos is omitted for simplicity.
+* It was noticed that integration tests fail in Java 9 when run by Maven. Everything works correctly in Java 8.
 
