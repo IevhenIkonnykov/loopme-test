@@ -1,6 +1,7 @@
 package com.fullstack.test.dao;
 
-import com.fullstack.test.domain.*;
+import com.fullstack.test.domain.User;
+import com.fullstack.test.domain.UserRole;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -11,15 +12,10 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 @TestPropertySource(
         locations = "classpath:application-test.properties")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class UserRepositoryTest {
 
     @Autowired
@@ -36,6 +32,7 @@ public class UserRepositoryTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void deletesUser() {
         userRepository.delete(userRepository.findByEmail("a@a.com"));
 
@@ -43,6 +40,7 @@ public class UserRepositoryTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void createsUser() {
         User user = new User();
         user.setName("New");

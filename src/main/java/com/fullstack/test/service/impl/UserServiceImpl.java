@@ -6,6 +6,7 @@ import com.fullstack.test.domain.UserPrincipal;
 import com.fullstack.test.domain.UserRole;
 import com.fullstack.test.dto.UserDto;
 import com.fullstack.test.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -51,18 +53,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void create(User user) {
-        userRepository.save(user);
+    public void create(UserDto dto) throws IllegalAccessException {
+        if(dto.getId() != null){
+            throw new IllegalAccessException("User id should not be set.");
+        }
+
+        User user = new User();
+        BeanUtils.copyProperties(dto, user);
+        user.setRole(UserRole.valueOf(dto.getAuthorities().get(0)));
+        user.setPassword("pass");  // just for the test project. Password operations need additional consideration
+        this.validateUserAccess(user.getRole());
+
+        this.userRepository.save(user);
     }
 
     @Override
-    public void update(User user) {
-        userRepository.save(user);
+    public void update(UserDto dto) throws IllegalAccessException {
+        Optional<User> userOptional = this.userRepository.findById(dto.getId());
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            this.validateUserAccess(user.getRole());
+            BeanUtils.copyProperties(dto, user);
+            this.userRepository.save(user);
+        }
     }
 
     @Override
-    public void delete(User user) {
-        userRepository.delete(user);
+    public void delete(Long id) throws IllegalAccessException {
+        Optional<User> userOptional = this.userRepository.findById(id);
+
+        if (userOptional.isPresent()) {
+            User user = userOptional.get();
+            this.validateUserAccess(user.getRole());
+            this.userRepository.delete(user);
+        }
     }
 
     private List<UserDto> getUserDtos(UserRole role) {
@@ -77,5 +102,14 @@ public class UserServiceImpl implements UserService {
                     return userDto;
                 })
                 .collect(Collectors.toList());
+    }
+
+    private void validateUserAccess(UserRole role) throws IllegalAccessException {
+        SecurityContext context = SecurityContextHolder.getContext();
+        UserPrincipal userPrincipal = (UserPrincipal) (context.getAuthentication().getPrincipal());
+        User user = userPrincipal.getUser();
+        if ((user.getRole().equals(UserRole.ADOPS) && !role.equals(UserRole.PUBLISHER)) || (user.getRole().equals(UserRole.ADMIN) && role.equals(UserRole.ADMIN))) {
+            throw new IllegalAccessException("You are not allowed to delete a user.");
+        }
     }
 }

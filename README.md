@@ -21,10 +21,11 @@ By default the following users are present in the database:
 * publisher2 - username: x@x.com, password: pass
 
 # General notes:
-* UI part of the project is not complete, because Vladimir Borodulyn mentioned that it is not required. 
+* UI part of the project is not complete, because Vladimir Borodulyn mentioned that it is not required.
 It lacks create/update/delete functionality for app/publisher/operator. Nevertheless the backend part exposes such api.
-* Task description does not contain information about a test coverage, so the ui part is covered only partly, but the backend part is covered better.
-* CSRF support is disabled for simplicity, because the task description does not contain requirements concerning how security should be organized and in which bounds.
 * UI part is not optimized for mobile or tablet screen sizes and there is not a support for variety of web browsers.
-It was developed and tested for a modern Google Chrome browser. 
+It was developed and tested for a modern Google Chrome browser.  
+* Task description does not contain information about a test coverage, so the project is covered only partly.
+* CSRF support is disabled for simplicity, because the task description does not contain requirements concerning how security should be organized and in which bounds.
+* Validation of dtos is omitted for simplicity.
 

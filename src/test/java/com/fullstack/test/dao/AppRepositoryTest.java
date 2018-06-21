@@ -21,7 +21,6 @@ import java.util.Set;
 @SpringBootTest()
 @TestPropertySource(
         locations = "classpath:application-test.properties")
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AppRepositoryTest {
     @Autowired
     private AppRepository appRepository;
@@ -33,6 +32,7 @@ public class AppRepositoryTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void deletesApp() {
         List<App> apps = appRepository.findAllByUserId(3L);
 
@@ -42,6 +42,7 @@ public class AppRepositoryTest {
     }
 
     @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void createsApp() {
         List<App> apps = appRepository.findAllByUserId(3L);
         User user = apps.get(0).getUser();
