@@ -25,7 +25,8 @@
     "lodash": "^4.17.4",
     "core-js": "^2.5.4",
     "rxjs": "^6.0.0",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "ngx-webstorage": "^2.0.1"
   },
   "devDependencies": {
     "@angular/compiler-cli": "^6.0.0",

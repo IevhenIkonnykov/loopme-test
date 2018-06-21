@@ -1,6 +1,10 @@
 package com.fullstack.test.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -21,8 +25,10 @@ public class App {
     @Column(nullable = false)
     @ElementCollection
     @Enumerated(EnumType.STRING)
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private Set<ContentType> contentTypes;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
@@ -65,5 +71,22 @@ public class App {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof App)) return false;
+        App app = (App) o;
+        return Objects.equals(getId(), app.getId()) &&
+                Objects.equals(getName(), app.getName()) &&
+                getType() == app.getType() &&
+                Objects.equals(getContentTypes(), app.getContentTypes());
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId(), getName(), getType(), getContentTypes());
     }
 }

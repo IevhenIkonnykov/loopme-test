@@ -1,0 +1,20 @@
+<button mat-raised-button color="primary" (click)="getApps()">Refresh</button>
+<div class="card-container">
+  <mat-card class="card" *ngFor="let app of apps">
+    <mat-card-header>
+      <mat-card-title class="card__header">{{app.name | uppercase }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="card__content">
+        <span>Type:</span>{{app.type}}
+      </p>
+      <p class="card__content">
+        <span>ContentTypes:</span>{{app.contentTypes}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>EDIT</button>
+      <button mat-button>DELETE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

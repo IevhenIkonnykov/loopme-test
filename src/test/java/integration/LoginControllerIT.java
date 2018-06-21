@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.MOCK, classes = TestApplication.class)
 @AutoConfigureMockMvc
 @TestPropertySource(
-        locations = "classpath:application-integrationtest.properties")
+        locations = "classpath:application-test.properties")
 public class LoginControllerIT {
 
     @Autowired
@@ -31,7 +31,8 @@ public class LoginControllerIT {
                 .andExpect(status().isOk())
                 .andExpect(content()
                         .contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(jsonPath("$.name").value("publisher"))
+                .andExpect(jsonPath("$.id").value("3"))
+                .andExpect(jsonPath("$.name").value("publisher1"))
                 .andExpect(jsonPath("$.email").value("c@c.com"))
                 .andExpect(jsonPath("$.authorities").value("PUBLISHER"));
     }

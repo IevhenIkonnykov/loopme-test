@@ -3,11 +3,16 @@ import {User} from "./user";
 import {filter, map} from "rxjs/operators";
 import {Observable} from "rxjs/internal/Observable";
 import {BehaviorSubject} from "rxjs/internal/BehaviorSubject";
+import {SessionStorageService} from 'ngx-webstorage';
+import {Utils} from "./Utils";
+import {Router} from "@angular/router";
+import {UserRole} from "./userRole";
 
 const ANONYMOUS_USER: User = {
-  name: undefined,
+  id: undefined,
+  name: 'Guest',
   email: undefined,
-  authorities: []
+  authorities: [UserRole.GUEST]
 };
 
 @Injectable()
@@ -21,16 +26,19 @@ export class AuthService {
 
   isLoggedOut$: Observable<boolean>;
 
-  constructor() {
+  constructor(private sessionStorageService: SessionStorageService,
+              private router: Router) {
     this.isLoggedIn$ = this.user$.pipe(map(user => !!user.email));
     this.isLoggedOut$ = this.isLoggedIn$.pipe(map(isLoggedIn => !isLoggedIn));
   }
 
   setUser(user: User) {
-    this.user.next(user);
+    this.user.next(Utils.isUndefinedOrNull(user) ? ANONYMOUS_USER : user);
+    this.sessionStorageService.store('currentUser', user);
   }
 
   logout() {
-    this.user.next(ANONYMOUS_USER);
+    this.setUser(ANONYMOUS_USER);
+    this.sessionStorageService.clear();
   }
 }

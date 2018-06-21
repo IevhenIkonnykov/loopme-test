@@ -28,7 +28,7 @@ export class RBACAllowDirective implements OnDestroy {
   }
 
   @Input()
-  public set epRBACAllow(allowedRoles: string[]) {
+  public set lmRBACAllow(allowedRoles: string[]) {
     this.allowedRoles = allowedRoles;
     this.showIfUserAllowed();
   }

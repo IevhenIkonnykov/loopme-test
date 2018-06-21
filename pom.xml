@@ -114,6 +114,7 @@
                             <workingDirectory>src/main/ui</workingDirectory>
                             <arguments>
                                 <argument>build</argument>
+                                <argument>--prod</argument>
                             </arguments>
                         </configuration>
                     </execution>
@@ -127,7 +128,8 @@
                     <includes>
                         <include>**/*IT.java</include>
                     </includes>
-                    <classesDirectory>${basedir}/target/${project.artifactId}-${project.version}.jar.original</classesDirectory>
+                    <classesDirectory>${basedir}/target/${project.artifactId}-${project.version}.jar.original
+                    </classesDirectory>
                     <parallel>none</parallel>
                 </configuration>
                 <executions>

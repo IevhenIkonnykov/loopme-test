@@ -1,5 +1,11 @@
 <mat-toolbar>
-  <span>Test Application</span>
+  <span>{{user?.name}}</span>
+  <div class="menu">
+    <button mat-button *lmRBACAllow="['PUBLISHER', 'ADOPS']" [routerLink]="['/apps']">Apps</button>
+    <button mat-button *lmRBACAllow="['ADMIN', 'ADOPS']" [routerLink]="['/publishers']">Publishers</button>
+    <button mat-button *lmRBACAllow="['ADMIN']" [routerLink]="['/operators']">Operators</button>
+    <button mat-button *ngIf="isLoggedIn$ | async" [routerLink]="['/logout']" class="logout__button">Logout</button>
+  </div>
 </mat-toolbar>
 
 <div class="content">

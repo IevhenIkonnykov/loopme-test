@@ -1,0 +1,20 @@
+<button mat-raised-button color="primary" (click)="getOperators()">Refresh</button>
+<div class="card-container">
+  <mat-card class="card" *ngFor="let operator of operators">
+    <mat-card-header>
+      <mat-card-title class="card__header">{{operator.name | uppercase }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p class="card__content">
+        <span>E-mail:</span>{{operator.email}}
+      </p>
+      <p class="card__content">
+        <span>Role:</span>{{operator.authorities}}
+      </p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button>EDIT</button>
+      <button mat-button>DELETE</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

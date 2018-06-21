@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.annotation.Order;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -13,6 +14,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 @Configuration
 @EnableWebSecurity
@@ -30,17 +32,20 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http
                 .httpBasic()
                 .and()
+                .csrf()
+                .disable() // only for this test project, in real life it should be enabled
                 .authorizeRequests()
-                .antMatchers("/").permitAll()
+                .antMatchers("/", "/logout").permitAll()
                 .antMatchers("/api/user").authenticated()
-                .antMatchers("/api/app").access("hasAnyAuthority('PUBLISHER', 'ADOPS')")
-                .antMatchers("/api/publisher").access("hasAnyAuthority('ADMIN', 'ADOPS')")
-                .antMatchers("/api/operator").access("hasAuthority('ADMIN')");
+                .antMatchers("/api/app","/api/app/*").access("hasAnyAuthority('PUBLISHER', 'ADOPS')")
+                .antMatchers("/api/publisher","/api/publisher/*").access("hasAnyAuthority('ADMIN', 'ADOPS')")
+                .antMatchers("/api/operator","/api/operator/*").access("hasAuthority('ADMIN')")
+                .and()
+                .logout().logoutSuccessHandler((new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK)));
     }
 
     @Override
-    protected void configure(AuthenticationManagerBuilder auth)
-            throws Exception {
+    protected void configure(AuthenticationManagerBuilder auth) {
         auth.authenticationProvider(authenticationProvider());
     }
 

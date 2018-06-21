@@ -8,6 +8,10 @@ import {InformationDialogComponent} from "./information_dialog/information-dialo
 import {Dialog} from "./dialog";
 import {AuthService} from "./auth.service";
 import {Router} from "@angular/router";
+import {Utils} from "./Utils";
+import {Observable} from "rxjs/internal/Observable";
+import {catchError} from "rxjs/operators";
+import {throwError} from "rxjs/internal/observable/throwError";
 
 @Injectable()
 export class WebClientService {
@@ -27,12 +31,35 @@ export class WebClientService {
         this.router.navigate(['/home']).then(() => console.log('navigating home page...'));
       },
       error => {
-        const errorResponse = this.handleResponseError(error);
-        let dialog = new Dialog();
-        dialog.header = 'Error';
-        dialog.message = errorResponse.message;
-        this.openDialog(dialog);
+        this.handleLoginError(error);
       }
+    );
+  }
+
+  logout() {
+    this.http.get('/logout').subscribe(
+      () => {
+        this.authService.logout();
+        this.router.navigate(['/login']).then(() => console.log('navigating login page...'));
+      },
+      error => {
+        this.handleResponseError(error);
+      }
+    );
+  }
+
+  public get<T>(path: string, options?: any): Observable<T | ErrorResponse> {
+    let requestOptions = {};
+    if (!Utils.isUndefinedOrNull(options)) {
+      requestOptions = options;
+    }
+
+    requestOptions['headers'] = WebUtils.getHeadersWithoutAuthPopup();
+
+    return this.http.get<T>(path, requestOptions).pipe(
+      catchError((error) => {
+        return throwError(this.handleResponseError(error));
+      })
     );
   }
 
@@ -52,10 +79,43 @@ export class WebClientService {
       errorResponse.message = err.error.message;
     } else {
       console.log('The backend error occurred:', err.error);
-      errorResponse.status = err.status;
-      errorResponse.message = err.message;
+      errorResponse.status = err.error.status;
+      errorResponse.message = err.error.message;
+    }
+
+    let dialog = new Dialog();
+    dialog.header = 'Error';
+
+    if (errorResponse.status === 401) {
+      dialog.message = "Session has expired. Please login.";
+      this.openDialog(dialog);
+      this.authService.logout();
+      this.router.navigate(['/login']).then(() => console.log('navigating login page...'));
+    } else {
+      dialog.message = errorResponse.message;
+      this.openDialog(dialog);
     }
 
     return errorResponse;
+  }
+
+  handleLoginError(err: HttpErrorResponse) {
+    let dialog = new Dialog();
+    dialog.header = 'Error';
+
+    if (err.status === 401) {
+      dialog.message = "Incompatible E-mail and Password. Please try again.";
+      this.openDialog(dialog);
+      return;
+    }
+
+    if (err.error instanceof ErrorEvent) {
+      console.log('A client-side error occurred:', err.error);
+      dialog.message = err.error.message;
+    } else {
+      console.log('The backend error occurred:', err.error);
+      dialog.message = err.error.message;
+    }
+    this.openDialog(dialog);
   }
 }

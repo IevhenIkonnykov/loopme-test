@@ -17,6 +17,14 @@ To do this execute the command `npm install` in the folder `src/main/ui`.
 By default the following users are present in the database:
 * admin - username: a@a.com, password: pass
 * operator - username: b@b.com, password: pass
-* publisher - username: c@c.com, password: pass
+* publisher1 - username: c@c.com, password: pass
+* publisher2 - username: x@x.com, password: pass
 
+# General notes:
+* UI part of the project is not complete, because Vladimir Borodulyn mentioned that it is not required. 
+It lacks create/update/delete functionality for app/publisher/operator. Nevertheless the backend part exposes such api.
+* Task description does not contain information about a test coverage, so the ui part is covered only partly, but the backend part is covered better.
+* CSRF support is disabled for simplicity, because the task description does not contain requirements concerning how security should be organized and in which bounds.
+* UI part is not optimized for mobile or tablet screen sizes and there is not a support for variety of web browsers.
+It was developed and tested for a modern Google Chrome browser. 
 

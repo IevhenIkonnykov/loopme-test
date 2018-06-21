@@ -1,7 +1,10 @@
 package com.fullstack.test.domain;
 
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Objects;
 import java.util.Set;
 
 @Entity
@@ -26,6 +29,7 @@ public class User implements Serializable {
     private UserRole role;
 
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE, org.hibernate.annotations.CascadeType.DELETE})
     private Set<App> apps;
 
     public Long getId() {
@@ -74,5 +78,23 @@ public class User implements Serializable {
 
     public void setApps(Set<App> apps) {
         this.apps = apps;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User)) return false;
+        User user = (User) o;
+        return Objects.equals(getId(), user.getId()) &&
+                Objects.equals(getName(), user.getName()) &&
+                Objects.equals(getEmail(), user.getEmail()) &&
+                Objects.equals(getPassword(), user.getPassword()) &&
+                getRole() == user.getRole();
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(getId(), getName(), getEmail(), getPassword(), getRole());
     }
 }
